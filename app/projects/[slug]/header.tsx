@@ -3,10 +3,8 @@ import { ArrowLeft, Eye, Github, Twitter } from "lucide-react";
 import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
 import { Tag } from '../../../contentlayer.config.js';
-import { NestedType } from 'contentlayer/source-files';
 
 
-type Category = NestedType<"Tag">;
 
 type Props = {
 	project: {
@@ -17,7 +15,12 @@ type Props = {
 		coverImage?: string;
 		featured?: boolean;
 		// Tags based on the comment above
-		tags?: Category[];
+		tags?: {
+			type: "list",
+			of: {
+			  type: "string",
+			},
+		  },
 	};
 
 	views: number;
