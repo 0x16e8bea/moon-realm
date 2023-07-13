@@ -34,6 +34,15 @@ export const Article: React.FC<Props> = ({ project, views }) => {
 				<p className="z-20 mt-4 text-sm  duration-1000 text-zinc-400 group-hover:text-zinc-200">
 					{project.description}
 				</p>
+				{Array.isArray(project.tags) && (
+					<div className="z-20 mt-2 flex flex-wrap text-sm text-zinc-400 group-hover:text-zinc-200">
+						<span>
+							{project.tags.map((tag) => (
+								<span className="mr-2 mb-2 py-1 px-2 bg-blue-500 text-white rounded-md" key={tag.name}>{tag.name}</span>
+							))}
+							</span>
+					</div>
+				)}
 			</article>
 		</Link>
 	);

@@ -19,6 +19,5 @@
   background-repeat: no-repeat;
   background-color: rgba(0, 0, 0);
   opacity: 0.8;  /* Adjust as needed */
-  z-index: 0;  /* Adjust as needed */
+  z-index: -1;  /* Adjust as needed */
 }
-

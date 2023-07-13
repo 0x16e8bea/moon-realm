@@ -1,4 +1,4 @@
-import { defineDocumentType, makeSource } from "contentlayer/source-files";
+import { defineDocumentType, makeSource, defineNestedType } from "contentlayer/source-files";
 import remarkGfm from "remark-gfm";
 import rehypePrettyCode from "rehype-pretty-code";
 import rehypeSlug from "rehype-slug";
@@ -42,8 +42,25 @@ export const Project = defineDocumentType(() => ({
 		repository: {
 			type: "string",
 		},
+		coverImage: {
+			type: "string",
+		},
+		featured: {
+			type: "boolean",
+		},
+		tags: {
+			type: "list",
+			of: Tag,
+		},
 	},
 	computedFields,
+}));
+
+const Tag = defineNestedType(() => ({
+	name: "Category",
+	fields: {
+		name: { type: "string", required: true },
+	},
 }));
 
 export const Page = defineDocumentType(() => ({

@@ -3,12 +3,17 @@ import { ArrowLeft, Eye, Github, Twitter } from "lucide-react";
 import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
 
+
 type Props = {
 	project: {
 		url?: string;
 		title: string;
 		description: string;
 		repository?: string;
+		coverImage?: string;
+		featured?: string;
+		// Tags based on the comment above
+		tags?: string[];
 	};
 
 	views: number;
