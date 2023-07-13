@@ -11,7 +11,7 @@ type Props = {
 		description: string;
 		repository?: string;
 		coverImage?: string;
-		featured?: string;
+		featured?: boolean;
 		// Tags based on the comment above
 		tags?: string[];
 	};
