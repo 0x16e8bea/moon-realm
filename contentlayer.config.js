@@ -56,7 +56,7 @@ export const Project = defineDocumentType(() => ({
 	computedFields,
 }));
 
-const Tag = defineNestedType(() => ({
+export const Tag = defineNestedType(() => ({
 	name: "Category",
 	fields: {
 		name: { type: "string", required: true },
