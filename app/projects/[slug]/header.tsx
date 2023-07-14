@@ -2,29 +2,26 @@
 import { ArrowLeft, Eye, Github, Twitter } from "lucide-react";
 import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
-import { Tag } from '../../../contentlayer.config.js';
 
 
 
-type Props = {
+type Tag = {
+	name: string;
+  };
+  
+  type Props = {
 	project: {
-		url?: string;
-		title: string;
-		description: string;
-		repository?: string;
-		coverImage?: string;
-		featured?: boolean;
-		// Tags based on the comment above
-		tags?: {
-			type: "list",
-			of: {
-			  type: "string",
-			},
-		  },
+	  url?: string;
+	  title: string;
+	  description: string;
+	  repository?: string;
+	  coverImage?: string;
+	  featured?: boolean;
+	  tags?: Tag[]; // This line is changed
 	};
-
 	views: number;
-};
+  };
+  
 export const Header: React.FC<Props> = ({ project, views }) => {
 	const ref = useRef<HTMLElement>(null);
 	const [isIntersecting, setIntersecting] = useState(true);
