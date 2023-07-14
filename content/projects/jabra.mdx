@@ -1,35 +1,84 @@
 ---
 title: Jabra - Get the Basics Right
 description: I created an immersive VR training program for Jabra, a leading provider of audio products. The program helps new Jabra employees learn how to install and use their products in a fast and effective way. 
-date: "2023-04-01"
-url: https://unkey.dev
+date: "2023-07-15"
+url: https://virsabi.com/jabra/
 published: true
 repository: chronark/unkey
 coverImage: /Jabra_cover.jpg
 tags:
   - name: Unity
   - name: C#
+  - name: Quest 2
+  - name: UI/UX
 ---
 
-
 ![Jabra Cover](/Jabra_cover.jpg)
+In partnership with Jabra, a globally recognized manufacturer of audio equipment and videoconference systems, I spearheaded the development of an immersive VR training program. The training aimed to bolster product installation proficiency among new employees, thus easing the initial learning curve.
 
-**Title:** Jabra - Get the Basics Right
-**Role:** Lead Programmer, UX/UI Designer
+This article gives a detailed insight into the project, accentuating my role, the technology used, and the project outcomes. The article is structured as an interview between me and an AI "journalist".
 
-## Summary
-In collaboration with Jabra, we crafted an immersive VR training program aimed at enhancing product installation proficiency. Designed to expedite the onboarding process, this program equips new Jabra employees with the skills to efficiently install and utilize their products, significantly reducing the initial learning curve. Catering to diverse learning needs, the training program offers tiered instruction, empowering employees with the choice between basic and advanced product installation setups. The training program, powered by a Quest 2 headset, controllers, and microphones, delivers a realistic simulation for a hands-on, authentic experience.
+**Interviewer:** Thank you for joining us today. You've assumed many roles in this VR project with Jabra. Could you elaborate on your roles and responsibilities?
 
-## Software Utilized
-Unity, Photoshop, Illustrator, Blender 3D, Audacity
+**Mikkel:** Absolutely. In this project, I served as the project owner, lead programmer, and UX/UI designer. I handled the project's overall direction, led the technical development, and ensured the user interface was smooth and intuitive. Additionally, I supervised the 3D artists, leveraging my Blender expertise to uphold the quality of assets and enhance the artists' workflow.
 
-## My Contributions
-- Steered the project as the Lead Programmer, responsible for architecture, task delegation, and code reviews.
-- Developed a unique node-based narrative system that streamlined the creation of dialogue audio and manuscripts directly within Unity.
-- Implemented a custom audio manager system that seamlessly integrated with the node-based editor, improving audio editing workflow.
-- Crafted an engaging user-experience, ensuring a smooth, intuitive interface for trainees.
-- Optimized assets, skillfully managing UV space to reduce light artifacts during baking, thereby enhancing the visual experience.
-- Employed advanced shader programming to augment UI aesthetics through procedural shapes, providing an immersive and visually appealing training interface.
-- Engineered an adaptable system for cable connections, defining connector and input types, offering a flexible solution for varying hardware configurations.
+**Interviewer:** Fascinating! What technology did you utilize to bring this immersive experience to life?
 
-Following the implementation, the VR training program received positive feedback for its immersive experience and the ability to expedite the onboarding process for new employees. (Note: Modify this sentence based on the real outcomes of the project.)
+**Mikkel:** We intended for the training program to provide an authentic, hands-on experience. Therefore, we powered it with a Quest 2 headset, controllers, and microphones. On the software front, we employed Unity, Photoshop, Illustrator, Blender 3D, and Audacity to sculpt the end product.
+
+**Interviewer:** Your involvement in the project was extensive. Can you detail some of the key contributions you made?
+
+**Mikkel:** Indeed. One of the major achievements was developing a unique node-based narrative system in Unity. This facilitated the streamlined creation of dialogue audio and manuscripts. I also designed a custom audio manager system that enhanced the audio editing workflow.
+
+To ensure a superior user experience, I optimized assets to diminish light artifacts and used advanced shader programming to create a visually appealing interface. One of my personal favorites was creating an adaptable system for cable connections, catering to various hardware configurations.
+
+![Jabra Cover](/Jabra_02.jpg)
+
+**Interviewer:** It's clear you've made significant contributions. Could you speak about the outcome of this project and its reception?
+
+**Mikkel:** The VR training program was met with a warm reception, particularly for its immersive experience. It considerably reduced the onboarding process for new employees, equipping them to install and utilize Jabra products effectively. It was rewarding to see our project make a positive impact on user experience and efficiency. I recently came across this quote from one of our customers:
+
+*“It will also be part of our onboarding process. Letting everyone have physical access to all our products would be a logistical challenge, but here we can skip a few steps and make sure everyone becomes familiar with the most important products. Initially the experience has six products, but we can easily update the application remotely and add new products and features to headsets at all locations. It will be a part of our onboarding process and accelerate the time it takes for new employees to get familiar with Jabra”* - Claus Holmbeck Madsen, Global Head of Knowledge & Learning at GN Audio
+
+![Jabra Cover](/Jabra_01.jpg)
+
+**Interviewer:** Your insights into this project are indeed enlightening. It's impressive how you harnessed technology to create a comprehensive solution for Jabra.
+
+**Mikkel:** Thank you, it was a rewarding yet challenging experience. I think our team was exhausted afterward, since we had been crunching to get everything polished and ready for release. Fortunately, it all paid off in the end, and we even extended our contract with Jabra. I also learned a lot about leadership and strategies to improve code architecture in future projects. Let me start off with the architecture part because I believe we missed the mark initially (due to my inexperience at the time). Back when I crafted the architecture for this project, I was determined to make everything decoupled using a scriptable object event architecture. I was inspired by a talk at Unite Austin 2017 by Ryan Hipple (https://www.youtube.com/watch?v=raQ3iHhE_Kk). Unfortunately, I wasn't experienced enough back then to recognize the flaws of this approach. Eventually, we ended up with a very decoupled and modular system, but at the expense of debuggability and coherence. I also learned to limit the use of inheritance ... as a novice, it's easy to equate complexity with "good practice" or to stubbornly hold onto something that you spent time perfecting. For instance, the inheritance tree in this project became quite deep, making the code difficult to maintain. Today, I generally prefer to keep the inheritance tree as "flat" as possible. There were other aspects of the architecture that make me cringe today.
+
+**Interviewer:** What made you cringe?
+
+**Mikkel:** The fact that everything was event-based. As mentioned earlier, this resulted in a very decoupled and modular architecture, but it wasn't very performant, which luckily wasn't an issue in this project. We hardly had anything running in an update loop; instead, everything responded to some data through events (think of it like a chain reaction). I like the concept, but I think I'd approach it differently in the future. The system was designed in this way to lay the foundation for emergent behavior in the sim. We wanted unpredictable things to occur as the player interacted with the equipment (i.e., plugging the cables into the wrong places). Another downside was the reliance on scriptable objects as the glue to bind everything together.
+
+![Jabra Cover](/Jabra_03.jpg)
+
+**Interviewer:** How were scriptable objects used? You mentioned a scriptable object event architecture before?
+
+**Mikkel:** Yes, we essentially used a framework called "Atoms" for Unity. In Atoms, all your data is a scriptable object, and data is divided into the smallest units or "atoms" as the name suggests. You can aggregate data into collections, but the main point is that the data becomes an object stored on the disk. The other main feature of the architecture is that every piece of data can relay an event whenever it's changed, and these events are also scriptable objects. You can see where this is going.
+
+The original notion was that this would make the system more user-friendly. However, as we found out, I believe that should be a decision taken later rather than being the default. The problem with the scriptable object architecture is the hassle of setting up everything in the Unity scene, and if one of the GUIDs break (e.g., following a merge), it's quite a task locating all the areas in your scene where that object played a part and resolving the issue.
+
+**Interviewer:** That does sound challenging. How would you handle this differently in future projects?
+
+**Mikkel:** In retrospect, the decision to make the system user-friendly should have come later. For future projects, I'd reduce the use of scriptable objects, reserving them only for when they're absolutely essential. They're a potent tool, but their use as the foundation of a project can lead to complications, as we discovered.
+
+In short, I've learned that simpler is usually better. The primary focus should be on building a robust, maintainable, and efficient system. Additional considerations, like enhancing user-friendliness, should be thought out once the main objectives are achieved.
+
+![Jabra Cover](/Jabra_04.jpg)
+
+**Interviewer:** Your insights are invaluable. Looking ahead, how will these experiences influence your approach to leadership?
+
+**Mikkel:** Leading this project was a valuable learning experience. I realized the importance of considering the team's wellbeing. We worked extremely hard to refine and prepare everything for launch, which left us all tired. I've learned to better manage schedules and expectations to prevent such situations. However, given the project's timeframe, it would have been virtually impossible to do it differently. 
+
+Moreover, it's crucial to create an environment where everyone feels heard, but that can become difficult when working against a tight deadline. Nowadays, I try to let go more often, providing other team members the opportunity to learn and develop. I believe I used to rework a lot of code that I thought didn't meet the standard. However, after my time at a particular company, I learned the importance of regular code reviews and sharing sessions to ensure everyone is aligned and satisfied with the results. 
+
+**Interviewer:** It's clear that this project was not only a technical achievement but also a profound learning experience for you. In light of all these learnings and experiences, how would you summarize this project?
+
+**Mikkel:** This VR training program was a challenging task that stretched my skills as a developer and leader. It was a lesson in handling complex systems and confronting project management difficulties. Despite the challenges, the project's success was incredibly rewarding. The positive feedback from users and the reduction in the onboarding process for new employees demonstrated the program's worth.
+
+However, I believe the most significant takeaway was the wealth of knowledge and experience I gained. Every challenge and mistake I encountered ultimately served as a lesson, shaping me into a better developer and leader. It's an experience I will bear in mind as I undertake future projects.
+
+**Interviewer:** Thank you for sharing your journey with us, Mikkel. Your insights and reflections are sure to inspire other developers and leaders. I'm excited to hear about your future projects and to see how you'll apply these lessons in the times ahead.
+
+
+
