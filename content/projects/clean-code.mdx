@@ -1,0 +1,467 @@
+---
+title: Clean Code 101
+description: A short introduction to the SOLID principles and some other bits of information I picked up over the years.
+date: "2023-07-16"
+published: true
+tags:
+  - name: C#
+  - name: Architecture
+  - name: Tutorial
+---
+
+# Clean Code
+
+The SOLID principles in programming are a set of rules and best practices for designing classes. They are:
+
+- Single-responsibility Principle
+- Open-closed Principle
+- Liskov Substitution Principle
+- Interface Segregation Principle
+- Dependency Inversion Principle
+
+## Single Responsibility
+
+<aside>
+ℹ️ The Single Responsibility Principle states that a class should do one thing and therefore it should have only a single reason to change.
+
+</aside>
+
+Let us look at an example:
+
+```csharp
+public class Order
+{
+    public void PlaceOrder(Product product, int quantity, Address shippingAddress)
+    {
+        // code to place an order
+    }
+
+    public void SendEmailConfirmation(string emailAddress)
+    {
+        // code to send an email confirmation
+    }
+}
+```
+
+In this example, the `Order` class has two responsibilities: placing an order and sending an email confirmation.
+
+<aside>
+⛔ The `Order` class, managing two separate operations, could lead to unnecessary complications. Any modification in one function might inadvertently impact the other.
+
+</aside>
+
+<aside>
+✅ A better approach is to assign each function to a separate class, for example, a dedicated `EmailConfirmation` class for sending email confirmations.
+
+</aside>
+
+## Open-Closed Principle
+
+<aside>
+ℹ️ The Open-Closed Principle advocates that software entities (such as classes, modules, functions, etc.) should be designed to allow the addition of new functionality without changing existing code.
+
+</aside>
+
+Let's look at an example involving a Shape class with an Area() method used by various shape subclasses.
+
+```csharp
+public class Shape
+{
+    private double width;
+    private double height;
+    private string type;
+
+    public Shape(double width, double height, string type)
+    {
+        this.width = width;
+        this.height = height;
+        this.type = type;
+    }
+
+    public double Area()
+    {
+        if (type == "circle")
+        {
+            return Math.PI * width * width;
+        }
+        else if (type == "rectangle")
+        {
+            return width * height;
+        }
+        else if (type == "triangle")
+        {
+            return 0.5 * width * height;
+        }
+        else
+        {
+            throw new InvalidShapeException("Invalid shape type");
+        }
+    }
+}
+```
+Here, the Area method utilizes conditionals to handle various shape calculations.
+
+<aside>
+⛔ Each time a new shape type is introduced, the `Shape` class must be modified, defying the open-closed principle.
+</aside>
+
+<aside>
+✅ A more elegant approach would be to employ polymorphism, where each specific shape class extends the `Shape` base class, adhering to the open-closed principle.
+</aside>
+
+```csharp
+public abstract class Shape
+{
+    public abstract double Area();
+}
+
+public class Circle : Shape
+{
+    private double radius;
+
+    public Circle(double radius)
+    {
+        this.radius = radius;
+    }
+
+    public override double Area()
+    {
+        return Math.PI * radius * radius;
+    }
+}
+
+public class Rectangle : Shape
+{
+    private double width;
+    private double height;
+
+    public Rectangle(double width, double height)
+    {
+        this.width = width;
+        this.height = height;
+    }
+
+    public override double Area()
+    {
+        return width * height;
+    }
+}
+
+public class Triangle : Shape
+{
+    private double base;
+    private double height;
+
+    public Triangle(double @base, double height)
+    {
+        this.base = @base;
+        this.height = height;
+    }
+
+    public override double Area()
+    {
+        return 0.5 * @base * height;
+    }
+}
+```
+In this revised version, the Shape class is open for extension via subclasses but remains closed for modification.
+
+
+## **Liskov Substitution**
+
+<aside>
+ℹ️ The Liskov Substitution Principle (LSP) asserts that objects of a superclass should be replaceable with objects of its subclasses without disrupting the application.
+
+</aside>
+
+The following example exhibits a breach of this principle:
+
+```csharp
+public class Rectangle
+{
+    public virtual int Width { get; set; }
+    public virtual int Height { get; set; }
+
+    public int Area => Width * Height;
+}
+
+public class Square : Rectangle
+{
+    private int _size;
+
+    public int Size
+    {
+        get => _size;
+        set
+        {
+            _size = value;
+            Width = value;
+            Height = value;
+        }
+    }
+}
+
+public void Main()
+{
+    Rectangle rect = new Rectangle { Width = 4, Height = 5 };
+    Console.WriteLine(rect.Area); // Outputs 20
+
+    Square sq = new Square { Size = 4 };
+    Console.WriteLine(sq.Area); // Outputs 16
+
+    rect = sq;
+    Console.WriteLine(rect.Area); // Outputs 16
+
+    rect.Width = 10;
+    Console.WriteLine(rect.Area); // Outputs 16 (expected output is 50)
+}
+```
+
+<aside>
+⛔ The `Square` class inherits from `Rectangle` but doesn't accurately override the `Width` and `Height` properties. This inaccuracy leads to an incorrect output when a `Rectangle` object is replaced by a `Square` object.
+</aside>
+
+<aside>
+✅ A proper LSP adherence would be to accurately override the `Width` and `Height` properties in the `Square` subclass.
+</aside>
+
+Here's a revised version that adheres to the Liskov Substitution Principle:
+
+```csharp
+public class Square : Rectangle
+{
+    public override int Width
+    {
+        get => base.Width;
+        set
+        {
+            base.Width = value;
+            base.Height = value;
+        }
+    }
+
+    public override int Height
+    {
+        get => base.Height;
+        set
+        {
+            base.Width = value;
+            base.Height = value;
+        }
+    }
+}
+```
+
+## **Interface Segregation Principle**
+
+<aside>
+ℹ️ The Interface Segregation Principle (ISP) advocates for the creation of focused, specific interfaces instead of broad, all-encompassing ones, avoiding the unnecessary imposition of methods on clients.
+</aside>
+
+Consider this example where the Document class features methods for saving data to three different locations.
+
+```csharp
+public interface IDocumentStorage
+{
+    void SaveToDatabase();
+    void SaveToFile();
+    void SaveToCloud();
+}
+
+public class Document : IDocumentStorage
+{
+    public void SaveToDatabase() { /* implementation */ }
+    public void SaveToFile() { /* implementation */ }
+    public void SaveToCloud() { /* implementation */ }
+}
+```
+
+<aside>
+⛔ This approach goes against ISP because classes that rely on `Document` may not require all three save methods, leading to bloated and unnecessary code.
+</aside>
+
+<aside>
+✅ A more ISP-compliant solution involves the creation of separate interfaces, `IDatabaseStorage`, `IFileStorage`, and `ICloudStorage`, each with a distinct Save method. `Document` can then implement these as required.
+</aside>
+
+```csharp
+public interface IDatabaseStorage
+{
+    void Save();
+}
+
+public interface IFileStorage
+{
+    void Save();
+}
+
+public interface ICloudStorage
+{
+    void Save();
+}
+
+public class Document : IDatabaseStorage, IFileStorage, ICloudStorage
+{
+    public void Save() { /* implementation for all three storage types */ }
+}
+
+```
+
+## **Dependency Inversion Principle**
+
+<aside>
+ℹ️ The Dependency Inversion Principle (DIP) seeks to enhance software design by dissociating high-level modules from low-level ones. Both should rely on abstractions, instead of high-level modules being dependent on low-level ones.
+</aside>
+
+```csharp
+// High-level module (violating the DIP)
+public class CustomerService
+{
+    private readonly SqlServerCustomerRepository _customerRepository;
+
+    public CustomerService()
+    {
+        _customerRepository = new SqlServerCustomerRepository();
+    }
+
+    public void AddCustomer(Customer customer)
+    {
+        // Business logic goes here
+        // ...
+
+        _customerRepository.Save(customer);
+    }
+}
+
+// Low-level module (e.g. Data Access)
+public class SqlServerCustomerRepository
+{
+    public void Save(Customer customer)
+    {
+        // Implementation goes here
+        // ...
+    }
+}
+```
+
+<aside>
+⛔ Direct dependencies between high and low-level modules, as seen in `CustomerService`'s reference to `SqlServerCustomerRepository`, impede testability, flexibility, reusability, and maintainability.
+
+</aside>
+
+<aside>
+✅ Abstractions, rather than direct relationships, should bridge high and low-level modules. This practice enhances:
+
+1. **Testability**: Dependencies on abstractions facilitate isolated testing of high-level modules without elaborate test environment setups.
+2. **Reusability**: Untying high-level modules from specific implementations allows easier reuse in various contexts.
+3. **Flexibility**: Adherence to DIP yields more adaptable software systems, permitting high-level modules to utilize different low-level module implementations.
+4. **Maintainability**: DIP-compliant systems are easier to maintain, as low-level module modifications minimally impact high-level modules.
+</aside>
+
+Here is an example of a better approach using DIP.
+
+```csharp
+// High-level module (e.g. Business Logic)
+public class CustomerService
+{
+    private readonly ICustomerRepository _customerRepository;
+
+    public CustomerService(ICustomerRepository customerRepository)
+    {
+        _customerRepository = customerRepository;
+    }
+
+    public void AddCustomer(Customer customer)
+    {
+        // Business logic goes here
+        // ...
+
+        _customerRepository.Save(customer);
+    }
+}
+
+// Low-level module (e.g. Data Access)
+public class SqlServerCustomerRepository : ICustomerRepository
+{
+    public void Save(Customer customer)
+    {
+        // Implementation goes here
+        // ...
+    }
+}
+
+// Abstraction
+public interface ICustomerRepository
+{
+    void Save(Customer customer);
+}
+```
+
+# Inversion of Control
+
+Inversion of Control (IoC) is a design principle in which class behaviors are externally managed, typically through Dependency Injection (DI).
+
+## Dependency Injection
+
+With DI, a class receives its dependencies as constructor or method arguments, an external component being responsible for instantiation. This practice reduces dependency on concrete implementations, enhancing reuse, flexibility, and testability.
+
+## Bootstrapping
+
+Bootstrapping refers to setting up the DI container and its managed dependencies.
+
+<aside>
+ℹ️ A DI Container is a framework that instantiates and injects dependencies as needed, simplifying dependency management within an application.
+
+</aside>
+
+This typically happens only once, i.e., when starting the application. This setup, or the composition root, usually takes place in specific locations depending on the application type.
+
+## **Best Practices**
+
+Your application should not directly reference the DI container. Only the bootstrapper should do so.
+
+Avoid using the DI container as a global service locator. Dependencies should not be hidden as it makes the code base harder to read and understand, reducing the benefits of DI.
+
+<aside>
+⚠️ **Avoid DI container references outside the bootstrapper**
+The application should never directly reference the DI container; this should only be done inside the bootstrapper.
+</aside>
+
+<aside>
+⚠️ **Avoid use as a global service locator**
+Refrain from using the DI container as a global service locator. Do not hide dependencies, as this complicates the code base and undermines DI benefits.
+</aside>
+
+<aside>
+✅ **Refactoring insights**
+If constructor arguments increase in number, consider it a red flag that may signal design flaws. While a large number of constructor arguments may complicate class instantiation and testing, adherence to best practices allows for easy resolution.
+</aside>
+
+# Books and Resources
+
+Clean Code by Robert C. Martin
+
+[https://gist.github.com/wojteklu/73c6914cc446146b8b533c0988cf8d29](https://gist.github.com/wojteklu/73c6914cc446146b8b533c0988cf8d29)
+
+The Pragmatic Programmer by Andy Hunt and Dave Thomas
+
+Dependency Injection in .NET
+
+# Terminology
+
+1. **SOLID principles:** a set of principles for object-oriented design, including SRP, OCP, LSP, DIP, and ISP.
+2. **Single Responsibility Principle (SRP):** a class should have only one reason to change.
+3. **Open-Closed Principle (OCP):** a class should be open for extension, but closed for modification.
+4. **Liskov Substitution Principle (LSP):** derived classes should be substitutable for their base classes.
+5. **Dependency Inversion Principle (DIP):** high-level modules should not depend on low-level modules; both should depend on abstractions.
+6. **Interface Segregation Principle (ISP):** clients should not be forced to depend on interfaces they do not use.
+7. **Composition Over Inheritance:** favor object composition over inheritance to achieve code reuse.
+8. **Law of Demeter (LoD):** an object should only communicate with its immediate neighbors.
+9. **Law of Least Knowledge** (LoLK, also known as the "**Law of Demeter**"): an object should only communicate with its immediate neighbors and should have knowledge of as few other objects as possible.
+10. **KISS principle:** "keep it simple, stupid" - design should be as simple as possible.
+11. **DRY principle:** "don't repeat yourself" - avoid duplication of code.
+12. **YAGNI principle:** "you ain't gonna need it" - only implement functionality that is actually needed.
+13. **Separation of Concerns (SoC):** divide a system into distinct parts that can be developed, maintained, and scaled independently.
+14. **Boy Scout Rule:** leave code in a better state than you found it.
+15. **AAA (Arrange-Act-Assert) pattern:** tests should be divided into three distinct sections: Arrange, Act and Assert. The Arrange section is where objects to be tested are set up, the Act section is where the system under test is acted upon, and the Assert section is where the results of the test are verified.
+16. **Cyclomatic Complexity:** a software metric used to indicate the complexity of a program

@@ -6,19 +6,19 @@ import { Analytics } from "./components/analytics";
 
 export const metadata: Metadata = {
 	title: {
-		default: "chronark.com",
-		template: "%s | chronark.com",
+		default: "moon-realm.vercel.app",
+		template: "%s | moon-realm.vercel.app",
 	},
 	description: "Software engineer at www.replayinstitute.com",
 	openGraph: {
-		title: "chronark.com",
+		title: "moon-realm.vercel.app",
 		description:
 			"Software engineer at upstash.com and founder of planetfall.io",
-		url: "https://chronark.com",
-		siteName: "chronark.com",
+		url: "https://moon-realm.vercel.app/",
+		siteName: "moon-realm.vercel.app",
 		images: [
 			{
-				url: "https://chronark.com/og.png",
+				url: "https://moon-realm.vercel.app/og.png",
 				width: 1920,
 				height: 1080,
 			},
@@ -38,7 +38,7 @@ export const metadata: Metadata = {
 		},
 	},
 	twitter: {
-		title: "Chronark",
+		title: "0x16e8bea",
 		card: "summary_large_image",
 	},
 	icons: {

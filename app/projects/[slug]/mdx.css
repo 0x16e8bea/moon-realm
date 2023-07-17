@@ -30,3 +30,8 @@
   [data-rehype-pretty-code-title] + pre {
     @apply mt-0;
   }
+
+  .img-klimaklar {
+    @apply h-[50vh] object-cover mx-auto my-auto
+  }
+  

@@ -4,7 +4,7 @@ import Particles from "./components/particles";
 import Image from 'next/image'; // Import Image from next/image
 import dynamic from 'next/dynamic';
 
-const ClientAnimeComponent = dynamic(() => import('./ClientAnimeComponent'), { ssr: false });
+const ClientAnimeComponent = dynamic(() => import('./components/ClientAnimeComponent'), { ssr: false });
 
 const navigation = [
 	{ name: "Projects", href: "/projects" },
