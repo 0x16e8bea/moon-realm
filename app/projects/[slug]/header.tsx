@@ -1,6 +1,7 @@
 "use client";
 import { ArrowLeft, Eye, Github, Twitter } from "lucide-react";
 import Link from "next/link";
+import { type } from "os";
 import React, { useEffect, useRef, useState } from "react";
 
 
@@ -18,9 +19,11 @@ type Tag = {
 	  coverImage?: string;
 	  featured?: boolean;
 	  tags?: Tag[]; // This line is changed
+	  category?: string;
 	};
 	views: number;
   };
+  
   
 export const Header: React.FC<Props> = ({ project, views }) => {
 	const ref = useRef<HTMLElement>(null);

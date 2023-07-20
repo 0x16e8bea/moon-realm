@@ -1,4 +1,3 @@
-import 'global.css' // adjust the path based on your project structure
 import { notFound } from "next/navigation";
 import { allProjects } from "contentlayer/generated";
 import { Mdx } from "@/app/components/mdx";

@@ -1,5 +1,5 @@
 import "../global.css";
-import { Inter } from "@next/font/google";
+import { Commissioner } from "@next/font/google";
 import LocalFont from "@next/font/local";
 import { Metadata } from "next";
 import { Analytics } from "./components/analytics";
@@ -45,9 +45,10 @@ export const metadata: Metadata = {
 		shortcut: "/favicon.png",
 	},
 };
-const inter = Inter({
+const inter = Commissioner({
 	subsets: ["latin"],
 	variable: "--font-inter",
+	weight: "400"
 });
 
 const calSans = LocalFont({

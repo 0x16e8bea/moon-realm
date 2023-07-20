@@ -52,6 +52,9 @@ export const Project = defineDocumentType(() => ({
 			type: "list",
 			of: Tag,
 		},
+		category: {
+			type: "string",
+		},
 	},
 	computedFields,
 }));
