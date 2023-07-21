@@ -21,13 +21,16 @@ const JobTimeline: React.FC = () => {
 
   const nextSlide = () => {
     if (jobContainerRef.current) {
-      jobContainerRef.current.scrollLeft += jobContainerRef.current.offsetWidth;
+      console.log(jobContainerRef.current.offsetWidth);
+      // flex-shrink-0 p-2 ml-2 mr-2 border-2 rounded bg-white
+      jobContainerRef.current.scrollLeft += 266;
     }
   };
 
   const prevSlide = () => {
     if (jobContainerRef.current) {
-      jobContainerRef.current.scrollLeft -= jobContainerRef.current.offsetWidth;
+      console.log(jobContainerRef.current.offsetWidth);
+      jobContainerRef.current.scrollLeft -= 266;
     }
   };
 
@@ -37,8 +40,11 @@ const JobTimeline: React.FC = () => {
       <div ref={jobContainerRef} className="flex overflow-x-hidden scroll-container">
         {jobs.map((job, index) => (
           <div
-            className={`flex-shrink-0 p-2 mb-2 mr-2 border-2 rounded bg-white`}
-            style={{minWidth: '250px'}}
+            className={`flex-shrink-0 p-2 ml-2 mr-2 border-2 rounded bg-white`}
+            style={{
+              minWidth: '250px, maxWidth: 250px'
+            }}
+
             key={job.filter}
           >
             <h3 className="font-bold [font-stretch:extra-expanded]">{job.name}</h3>
