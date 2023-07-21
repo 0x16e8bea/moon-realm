@@ -42,7 +42,7 @@ const JobTimeline: React.FC = () => {
           <div
             className={`flex-shrink-0 p-2 ml-2 mr-2 border-2 rounded bg-white`}
             style={{
-              minWidth: '250px, maxWidth: 250px'
+              minWidth: '250px', maxWidth: '250px'
             }}
 
             key={job.filter}
