@@ -1,7 +1,15 @@
-import React from 'react';
+import React, { useRef } from 'react';
+import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 
-const JobTimeline = () => {
-  const jobs = [
+interface Job {
+  name: string;
+  role: string;
+  date: string;
+  filter: string;
+}
+
+const JobTimeline: React.FC = () => {
+  const jobs: Job[] = [
     { name: 'Replay Institute', role: 'Lead Programmer', date: 'Feb 2023 - Present', filter: 'replay institute' },
     { name: 'LEGO', role: 'Senior Software Engineering', date: 'Jan 2022 - Jan 2023', filter: 'lego' },
     { name: 'Virsabi', role: 'Programmer / Tech Artist', date: 'Oct 2019 - Dec 2021', filter: 'virsabi' },
@@ -9,24 +17,37 @@ const JobTimeline = () => {
     { name: 'Virtual Learning Lab', role: 'Lead Programmer', date: 'Sep 2018 - Dec 2019', filter: 'virtual learning lab' },
   ];
 
+  const jobContainerRef = useRef<HTMLDivElement | null>(null);
+
+  const nextSlide = () => {
+    if (jobContainerRef.current) {
+      jobContainerRef.current.scrollLeft += jobContainerRef.current.offsetWidth;
+    }
+  };
+
+  const prevSlide = () => {
+    if (jobContainerRef.current) {
+      jobContainerRef.current.scrollLeft -= jobContainerRef.current.offsetWidth;
+    }
+  };
+
   return (
-    <div className="mb-4">
-      <h2 className="text-3xl font-bold tracking-tight text-zinc-950 sm:text-4xl">
-        Work Experience
-      </h2>
-      <div className="mt-4 flex overflow-x-scroll scrollbar-hide">
-        {jobs.map((job) => (
+    <div className="relative flex items-center pl-5 pr-5 my-10">
+      <FaChevronLeft className="absolute z-10 left-0 transform cursor-pointer" onClick={prevSlide} />
+      <div ref={jobContainerRef} className="flex overflow-x-hidden scroll-container">
+        {jobs.map((job, index) => (
           <div
-            key={job.filter}
-            className={`flex-shrink-0 p-2 mb-2 mr-2 border rounded bg-white cursor-pointer`}
+            className={`flex-shrink-0 p-2 mb-2 mr-2 border-2 rounded bg-white`}
             style={{minWidth: '250px'}}
+            key={job.filter}
           >
-            <h3 className="font-bold">{job.name}</h3>
+            <h3 className="font-bold [font-stretch:extra-expanded]">{job.name}</h3>
             <p>{job.role}</p>
             <p className="text-sm text-zinc-500">{job.date}</p>
           </div>
         ))}
       </div>
+      <FaChevronRight className="absolute z-10 right-0 transform cursor-pointer" onClick={nextSlide} />
     </div>
   );
 };

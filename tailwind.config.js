@@ -29,7 +29,7 @@ module.exports = {
 				},
 			},
 			fontFamily: {
-				sans: ["var(--font-inter)", ...defaultTheme.fontFamily.sans],
+				sans: ["var(--font-monasans)", ...defaultTheme.fontFamily.sans],
 				display: ["var(--font-calsans)"],
 			},
 			backgroundImage: {
@@ -109,3 +109,5 @@ module.exports = {
 		require("tailwindcss-debug-screens"),
 	],
 };
+
+

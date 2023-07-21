@@ -23,7 +23,7 @@ export const Card: React.FC<CardProps> = ({ children, backgroundImage }) => {
 	let maskImage = useMotionTemplate`radial-gradient(240px at ${mouseX}px ${mouseY}px, red, transparent)`;
 	let style = { maskImage, WebkitMaskImage: maskImage };
 	
-	const classNames = `overflow-hidden relative duration-700 border rounded-xl bg-white hover:bg-zinc-800/10 group md:gap-8 hover:border-zinc-800 border-zinc-400 ${backgroundImage ? 'card-bg-image' : ''}`;
+	const classNames = `overflow-hidden relative duration-700 border-2 rounded-xl hover:bg-zinc-800/10 group md:gap-8 hover:border-zinc-300 border-zinc-200 ${backgroundImage ? 'card-bg-image' : ''} hover:shadow-lg hover:scale-105 hover:z-10 duration-200`;
 
 	return (
 		<div onMouseMove={onMouseMove} className={classNames}>

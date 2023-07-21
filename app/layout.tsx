@@ -45,10 +45,9 @@ export const metadata: Metadata = {
 		shortcut: "/favicon.png",
 	},
 };
-const inter = Commissioner({
-	subsets: ["latin"],
-	variable: "--font-inter",
-	weight: "400"
+const mona = LocalFont({
+	src: "../public/fonts/Mona-Sans.woff2",
+	variable: "--font-monasans",
 });
 
 const calSans = LocalFont({
@@ -62,7 +61,7 @@ export default function RootLayout({
 	children: React.ReactNode;
 }) {
 	return (
-		<html lang="en" className={[inter.variable, calSans.variable].join(" ")}>
+		<html lang="en" className={[mona.variable, calSans.variable].join(" ")}>
 			<head>
 				<Analytics />
 			</head>
