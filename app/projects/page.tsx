@@ -10,21 +10,20 @@ import { useState, useEffect } from 'react';
 import { Project } from "contentlayer/generated";
 import { motion } from 'framer-motion';
 import Masonry from 'react-masonry-css';
-import Head from 'next/head';
 import Spline from '@splinetool/react-spline';
 import { useRef } from 'react';
 
 
 export default function ProjectsPage() {
-    const splineObj = useRef<{ position: { x: number; y: number; z: number; }; } | null>(null);
-    const [scrollY, setScrollY] = useState(0);
+	const splineObj = useRef<{ position: { x: number; y: number; z: number; }; } | null>(null);
+	const [scrollY, setScrollY] = useState(0);
 
 	// Initialize state for filter and projects
 	const [filter, setFilter] = useState<string>("");
 	const [projects, setProjects] = useState<Project[]>([]);
 	const [visible, setVisible] = useState(true);
 
-    function onLoad(spline : any) {
+	function onLoad(spline: any) {
 		const obj = spline.findObjectByName('Group');
 		splineObj.current = obj;
 	}
@@ -38,7 +37,7 @@ export default function ProjectsPage() {
 			splineObj.current.position.y = scrollY * scrollSpeedFactor;
 		}
 	}
-	
+
 	useEffect(() => {
 		const handleScroll = () => {
 			setScrollY(window.scrollY);
@@ -110,15 +109,39 @@ export default function ProjectsPage() {
 	// First element should be a background div that takes up the entire screen with absolute positioning
 	return (
 		<div className="relative pb-16">
-			
-    	<Spline className="iframeBackground" scene="https://prod.spline.design/roeFDYkdQExzyV4I/scene.splinecode"
-		onLoad={onLoad}
-				/>
-  			);	
+
+			<Spline className="iframeBackground" scene="https://prod.spline.design/roeFDYkdQExzyV4I/scene.splinecode"
+				onLoad={onLoad}
+			/>
+			);
 
 			<Navigation />
+
 			<div className="px-6 pt-16 mx-auto space-y-8 max-w-7xl lg:px-8 md:space-y-16 md:pt-24 lg:pt-32">
 				<div className="mx-auto lg:mx-0">
+
+					<div className="relative items-center justify-center w-full min-w-xl py-16 mx-auto lg:py-24 max-w-xl">
+						<Card>
+
+							<div className="relative bg-white bg-opacity-50 text-white h-64 backdrop-blur">
+								<div className="flex items-center justify-center h-full px-5">
+									<img className="h-32 w-32 rounded-full object-cover" src="/profile.jpg" alt="User" />
+									<div className="ml-4">
+										<h2 className="[font-stretch:extra-expanded] lg:text-2xl font-medium text-neutral-950 sm:text-xl">Mikkel Mogensen</h2>
+										<p className="text-xs sm:text-sm [font-stretch:extra-expanded] text-neutral-950 flex flex-col sm:flex-row"><span className="font-bold">Date of Birth:</span> <span>24-02-1994</span></p>
+										<p className="text-xs sm:text-sm [font-stretch:extra-expanded] text-neutral-950 flex flex-col sm:flex-row"><span className="font-bold">Organization:</span> <span>Replay Institute</span></p>
+										<p className="text-xs sm:text-sm [font-stretch:extra-expanded] text-neutral-950 flex flex-col sm:flex-row"><span className="font-bold">Title:</span> <span>Tech Lead</span></p>
+										<p className="text-xs sm:text-sm [font-stretch:extra-expanded] text-neutral-950 flex flex-col sm:flex-row"><span className="font-bold">Valid From:</span> <span>02-23</span></p>
+										<p className="text-xs sm:text-sm [font-stretch:extra-expanded] text-neutral-950 flex flex-col sm:flex-row"><span className="font-bold">ID:</span> <span>0x16e8bea</span></p>
+									</div>
+								</div>
+							</div>
+
+						</Card>
+					</div>
+
+
+
 					<h2 className="block tracking-tight [text-wrap:balance] text-4xl font-medium sm:text-5xl text-neutral-950 font-light [font-stretch:extra-expanded]">
 						Work Experience
 					</h2 >
@@ -179,5 +202,5 @@ export default function ProjectsPage() {
 			</div>
 		</div>
 	);
-	
+
 }

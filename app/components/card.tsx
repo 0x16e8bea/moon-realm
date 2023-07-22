@@ -79,7 +79,7 @@ export const Card: React.FC<CardProps> = ({ children, backgroundImage }) => {
                         </div>
                     </motion.div>
                 )}
-                <div className="z-10 p-4">
+                <div>
                     {children}
                 </div>
             </motion.div>
