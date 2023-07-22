@@ -21,7 +21,16 @@
   opacity: 0.8;  /* Adjust as needed */
   z-index: -1;  /* Adjust as needed */
   backface-visibility: hidden;
-  
+}
+
+.animatedanimated-card {
+  box-shadow: 0 0 0 rgba(0,0,0,0);
+  transition: box-shadow 0.2s ease-in-out;
+}
+
+.animated-card:hover {
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  transition: box-shadow 0.2s ease-in-out;
 }
 
 .square-img {
@@ -84,3 +93,4 @@
   height: 100%;
   z-index: -1; 
 }
+
