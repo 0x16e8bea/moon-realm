@@ -192,7 +192,7 @@ export default function ProjectsPage() {
 							transition={{ duration: 0.5 }}
 						>
 							<Card backgroundImage={project.coverImage} >
-								<Article project={project} views={/*views[project.slug] ??*/ 0} />
+								<Article project={project} />
 							</Card>
 
 						</motion.div>
