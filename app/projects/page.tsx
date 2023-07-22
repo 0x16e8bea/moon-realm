@@ -128,11 +128,11 @@ export default function ProjectsPage() {
 									<img className="h-32 w-32 rounded-full object-cover" src="/profile.jpg" alt="User" />
 									<div className="ml-4">
 										<h2 className="[font-stretch:extra-expanded] lg:text-2xl font-medium text-neutral-950 sm:text-xl">Mikkel Mogensen</h2>
-										<p className="text-xs sm:text-sm [font-stretch:extra-expanded] text-neutral-950 flex flex-col sm:flex-row"><span className="font-bold">Date of Birth:</span> <span>24-02-1994</span></p>
-										<p className="text-xs sm:text-sm [font-stretch:extra-expanded] text-neutral-950 flex flex-col sm:flex-row"><span className="font-bold">Organization:</span> <span>Replay Institute</span></p>
-										<p className="text-xs sm:text-sm [font-stretch:extra-expanded] text-neutral-950 flex flex-col sm:flex-row"><span className="font-bold">Title:</span> <span>Tech Lead</span></p>
-										<p className="text-xs sm:text-sm [font-stretch:extra-expanded] text-neutral-950 flex flex-col sm:flex-row"><span className="font-bold">Valid From:</span> <span>02-23</span></p>
-										<p className="text-xs sm:text-sm [font-stretch:extra-expanded] text-neutral-950 flex flex-col sm:flex-row"><span className="font-bold">ID:</span> <span>0x16e8bea</span></p>
+										<p className="text-xs sm:text-sm [font-stretch:extra-expanded] text-neutral-950 flex flex-col sm:flex-row space-x-2"><span className="font-bold">Date of Birth:</span> <span>24-02-1994</span></p>
+										<p className="text-xs sm:text-sm [font-stretch:extra-expanded] text-neutral-950 flex flex-col sm:flex-row space-x-2"><span className="font-bold">Organization:</span> <span>Replay Institute</span></p>
+										<p className="text-xs sm:text-sm [font-stretch:extra-expanded] text-neutral-950 flex flex-col sm:flex-row space-x-2"><span className="font-bold">Title:</span> <span>Tech Lead</span></p>
+										<p className="text-xs sm:text-sm [font-stretch:extra-expanded] text-neutral-950 flex flex-col sm:flex-row space-x-2"><span className="font-bold">Valid From:</span> <span>02-23</span></p>
+										<p className="text-xs sm:text-sm [font-stretch:extra-expanded] text-neutral-950 flex flex-col sm:flex-row space-x-2"><span className="font-bold">ID:</span> <span>0x16e8bea</span></p>
 									</div>
 								</div>
 							</div>
