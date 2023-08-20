@@ -16,13 +16,14 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { NodeToyMaterial, NodeToyTick } from '@nodetoy/react-nodetoy'
 import { Mesh } from "three";
 import { useThree, ThreeElements } from '@react-three/fiber';
-import {useScroll, Scroll, ScrollControls, PerspectiveCamera, OrbitControls, Environment, useGLTF, Float, PivotControls, QuadraticBezierLine, Backdrop, ContactShadows } from '@react-three/drei'
+import {PerspectiveCamera, OrbitControls, Environment, useGLTF, Float, PivotControls, QuadraticBezierLine, Backdrop, ContactShadows } from '@react-three/drei'
 
 
 
 
 export default function ProjectsPage() {
 	const cameraRef = useRef<{ position: { x: number; y: number; z: number; }; } | null>(null);
+	const [scrollY, setScrollY] = useState(0);
 
 	// Initialize state for filter and projects
 	const [filter, setFilter] = useState<string>("");
@@ -63,11 +64,57 @@ export default function ProjectsPage() {
 		};
 	}, [filter]);
 
+	function moveObj() {
+		// Adjust this value to change the speed at which the camera moves relative to the scroll speed
+		const scrollSpeedFactor = -0.008;
+	
+		if (cameraRef.current) {
+			// Update the camera's position based on the current scroll position
+			cameraRef.current.position.y = scrollY * scrollSpeedFactor;
+		}
+	}
+
+	function TurntableCamera() {
+		const { camera, clock } = useThree();
+	
+		// Assign the camera to our ref
+		useEffect(() => {
+			cameraRef.current = camera;
+		}, [camera]);
+	
+		useFrame(() => {
+			const elapsedTime = clock.getElapsedTime();
+
+			
+		});
+	
+		return null;
+	}
+
+	useEffect(() => {
+		const handleScroll = () => {
+			setScrollY(window.scrollY);
+		};
+
+		// Attach the scroll event listener
+		window.addEventListener('scroll', handleScroll);
+
+		// Clean up the event listener when the component unmounts
+		return () => {
+			window.removeEventListener('scroll', handleScroll);
+		};
+	}, []);
+
+	useEffect(() => {
+		// Call the moveObj function every time the scroll position changes
+		moveObj();
+	}, [scrollY]);
+
+
+
 
 	
 	function Scene(props: JSX.IntrinsicElements['mesh']) {
-		const { camera } = useThree(); // Access the camera directly
-		const scroll = useScroll()
 		const ref = useRef<THREE.Mesh>(null!)
 		const fileUrl = "/Scene.glb";
 		const gltf = useLoader(GLTFLoader, fileUrl);
@@ -78,14 +125,6 @@ export default function ProjectsPage() {
 				ref.current.rotation.y = clock.getElapsedTime() * 0.1;
 			}
 		});
-
-		useFrame(() => {
-			// Simply moving the camera up and down based on the scroll offset
-			// Adjust this logic as per your requirements.
-			camera.position.y = 5 * -scroll.offset;
-		});
-		
-
 
 		return (
 			<mesh
@@ -115,14 +154,6 @@ export default function ProjectsPage() {
 	
 
 
-	/*
-	const Scene = () => {
-		const fbx = useFBX("/Scene.fbx");
-		<NodeToyMaterial data={data} />
-
-		return <primitive object={fbx} scale={1} />;
-	};
-	*/
 
 	// Function to update filter
 	const changeFilter = (newFilter: string) => {
@@ -143,26 +174,34 @@ export default function ProjectsPage() {
 
 
 
-			<Canvas
+			<Canvas 
+				resize={{scroll: false}}
 				// Make the canvas absolute positioned so it fills the entire screen. The canvas should always stick to the page, even when scrolling
 				style={{
 					width: '100%',
 						height: '100vh',
 					// Center align
-					position: 'absolute',
+					position: 'fixed',
+					zIndex: -1,
 				}}>
 
 				<PerspectiveCamera position={[0, 0, -5]}>
-
-				<ScrollControls pages={2} damping={0.08}>
 
 				<directionalLight position={[-10, -10, -5]} intensity={2} />
 				<ambientLight intensity={1} />
 				<Scene />
 
-				{/* @ts-ignore */}
-				<Scroll html style={{ width: '100%' }}>
-				<div className="px-6 pt-16 mx-auto space-y-8 max-w-7xl lg:px-8 md:space-y-16 md:pt-24 lg:pt-32">
+				<Environment preset="dawn" />
+				</PerspectiveCamera>
+				<TurntableCamera/>
+
+			</Canvas>
+
+
+
+			<Navigation />
+
+			<div className="px-6 pt-16 mx-auto space-y-8 max-w-7xl lg:px-8 md:space-y-16 md:pt-24 lg:pt-32">
 				<div className="mx-auto lg:mx-0">
 
 					<div className="relative items-center justify-center w-full min-w-xl py-16 mx-auto lg:py-24 max-w-xl">
@@ -245,18 +284,7 @@ export default function ProjectsPage() {
 					))}
 				</Masonry>
 			</div>
-				</Scroll>
 
-				</ScrollControls>
-				<Environment preset="dawn" />
-				</PerspectiveCamera>
-
-
-			</Canvas>
-
-
-
-			<Navigation />
 
 
 		</div>
