@@ -10,52 +10,24 @@ import { useState, useEffect } from 'react';
 import { Project } from "contentlayer/generated";
 import { motion } from 'framer-motion';
 import Masonry from 'react-masonry-css';
-import Spline from '@splinetool/react-spline';
 import { useRef } from 'react';
+import { Canvas, useFrame, useLoader } from '@react-three/fiber'
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+import { NodeToyMaterial, NodeToyTick } from '@nodetoy/react-nodetoy'
+import { Mesh } from "three";
+import { useThree, ThreeElements } from '@react-three/fiber';
+import {useScroll, Scroll, ScrollControls, PerspectiveCamera, OrbitControls, Environment, useGLTF, Float, PivotControls, QuadraticBezierLine, Backdrop, ContactShadows } from '@react-three/drei'
+
+
 
 
 export default function ProjectsPage() {
-	const splineObj = useRef<{ position: { x: number; y: number; z: number; }; } | null>(null);
-	const [scrollY, setScrollY] = useState(0);
+	const cameraRef = useRef<{ position: { x: number; y: number; z: number; }; } | null>(null);
 
 	// Initialize state for filter and projects
 	const [filter, setFilter] = useState<string>("");
 	const [projects, setProjects] = useState<Project[]>([]);
 	const [visible, setVisible] = useState(true);
-
-	function onLoad(spline: any) {
-		const obj = spline.findObjectByName('Group');
-		splineObj.current = obj;
-	}
-
-	function moveObj() {
-		// Adjust this value to change the speed at which the object moves relative to the scroll speed
-		const scrollSpeedFactor = 0.8;
-
-		if (splineObj.current) {
-			// Update the position based on the current scroll position
-			splineObj.current.position.y = scrollY * scrollSpeedFactor;
-		}
-	}
-
-	useEffect(() => {
-		const handleScroll = () => {
-			setScrollY(window.scrollY);
-		};
-
-		// Attach the scroll event listener
-		window.addEventListener('scroll', handleScroll);
-
-		// Clean up the event listener when the component unmounts
-		return () => {
-			window.removeEventListener('scroll', handleScroll);
-		};
-	}, []);
-
-	useEffect(() => {
-		// Call the moveObj function every time the scroll position changes
-		moveObj();
-	}, [scrollY]);
 
 	useEffect(() => {
 		// Set visibility to false to animate out items
@@ -92,6 +64,65 @@ export default function ProjectsPage() {
 	}, [filter]);
 
 
+	
+	function Scene(props: JSX.IntrinsicElements['mesh']) {
+		const { camera } = useThree(); // Access the camera directly
+		const scroll = useScroll()
+		const ref = useRef<THREE.Mesh>(null!)
+		const fileUrl = "/Scene.glb";
+		const gltf = useLoader(GLTFLoader, fileUrl);
+
+		// Rotate mesh using deltaTime in Three
+		useFrame(({ clock }) => {
+			if (ref.current) {
+				ref.current.rotation.y = clock.getElapsedTime() * 0.1;
+			}
+		});
+
+		useFrame(() => {
+			// Simply moving the camera up and down based on the scroll offset
+			// Adjust this logic as per your requirements.
+			camera.position.y = 5 * -scroll.offset;
+		});
+		
+
+
+		return (
+			<mesh
+			ref={ref}
+			{...props}
+			>
+				
+				{/* Iterate through the children of the loaded scene */}
+				{gltf.scene.children.map((child, index) => {
+					if (child instanceof Mesh) {
+						const clonedChild = child.clone();
+						return (
+
+								<primitive object={clonedChild}>
+        						<NodeToyMaterial url={"https://draft.nodetoy.co/OWgHCLwwpu2p1cCc"} />
+
+								</primitive>
+
+
+						);
+					}
+				})}
+			</mesh>
+		);
+	}
+
+	
+
+
+	/*
+	const Scene = () => {
+		const fbx = useFBX("/Scene.fbx");
+		<NodeToyMaterial data={data} />
+
+		return <primitive object={fbx} scale={1} />;
+	};
+	*/
 
 	// Function to update filter
 	const changeFilter = (newFilter: string) => {
@@ -110,14 +141,27 @@ export default function ProjectsPage() {
 	return (
 		<div className="relative pb-16">
 
-			<Spline className="iframeBackground" scene="https://prod.spline.design/roeFDYkdQExzyV4I/scene.splinecode"
-				onLoad={onLoad}
-			/>
-			);
 
-			<Navigation />
 
-			<div className="px-6 pt-16 mx-auto space-y-8 max-w-7xl lg:px-8 md:space-y-16 md:pt-24 lg:pt-32">
+			<Canvas
+				// Make the canvas absolute positioned so it fills the entire screen. The canvas should always stick to the page, even when scrolling
+				style={{
+					width: '100%',
+						height: '100vh',
+					// Center align
+					position: 'absolute',
+				}}>
+
+				<PerspectiveCamera position={[0, 0, -5]}>
+
+				<ScrollControls pages={2} damping={0.08}>
+
+				<directionalLight position={[-10, -10, -5]} intensity={2} />
+				<ambientLight intensity={1} />
+				<Scene />
+
+				<Scroll html style={{ width: '100%' }}>
+				<div className="px-6 pt-16 mx-auto space-y-8 max-w-7xl lg:px-8 md:space-y-16 md:pt-24 lg:pt-32">
 				<div className="mx-auto lg:mx-0">
 
 					<div className="relative items-center justify-center w-full min-w-xl py-16 mx-auto lg:py-24 max-w-xl">
@@ -200,6 +244,20 @@ export default function ProjectsPage() {
 					))}
 				</Masonry>
 			</div>
+				</Scroll>
+
+				</ScrollControls>
+				<Environment preset="dawn" />
+				</PerspectiveCamera>
+
+
+			</Canvas>
+
+
+
+			<Navigation />
+
+
 		</div>
 	);
 

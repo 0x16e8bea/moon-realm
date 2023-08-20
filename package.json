@@ -11,11 +11,15 @@
   "dependencies": {
     "@next/font": "^13.4.3",
     "@next/mdx": "^13.4.3",
+    "@nodetoy/react-nodetoy": "^0.1.24",
+    "@react-three/drei": "^9.80.3",
+    "@react-three/fiber": "^8.13.7",
     "@splinetool/react-spline": "^2.2.6",
     "@splinetool/runtime": "^0.9.391",
     "@types/node": "20.2.1",
     "@types/react": "18.2.6",
     "@types/react-dom": "18.2.4",
+    "@types/three": "^0.155.0",
     "@upstash/redis": "^1.20.6",
     "animejs": "^3.2.1",
     "babel-plugin-inline-react-svg": "^2.0.2",
@@ -36,6 +40,8 @@
     "rehype-pretty-code": "^0.9.5",
     "rehype-slug": "^5.1.0",
     "remark-gfm": "^3.0.1",
+    "three": "^0.155.0",
+    "three-stdlib": "^2.24.2",
     "typescript": "5.0.4"
   },
   "devDependencies": {
