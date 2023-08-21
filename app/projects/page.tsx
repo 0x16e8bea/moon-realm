@@ -207,7 +207,7 @@ export default function ProjectsPage() {
 					<div className="relative items-center justify-center w-full min-w-xl py-16 mx-auto lg:py-24 max-w-xl">
 						<Card>
 
-							<div className="relative bg-white bg-opacity-50 text-white h-64 backdrop-blur">
+							<div className="relative bg-white bg-opacity-50 text-white h-auto backdrop-blur">
 								<div className="flex items-center justify-center h-full">
 									<img className="object-cover" src="/IdCard.png" alt="User" />
 								</div>
