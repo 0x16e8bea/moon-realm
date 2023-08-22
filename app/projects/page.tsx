@@ -185,7 +185,7 @@ export default function ProjectsPage() {
 					zIndex: -1,
 				}}>
 
-				<PerspectiveCamera position={[0, 0, -5]}>
+				<PerspectiveCamera position={[0, 1.7, -5]}>
 
 				<directionalLight position={[-10, -10, -5]} intensity={2} />
 				<ambientLight intensity={1} />

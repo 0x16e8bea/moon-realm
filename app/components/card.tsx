@@ -56,6 +56,7 @@ export const Card: React.FC<CardProps> = ({ children, backgroundImage }) => {
 	let maskImage = useMotionTemplate`radial-gradient(240px at ${mouseX}px ${mouseY}px, red, transparent)`;
 	let style = { maskImage, WebkitMaskImage: maskImage };
 	
+    // Set border-corner-shape: bevel;
 	const classNames = `animated-card overflow-hidden relative border-2 rounded-xl hover:bg-zinc-800/10 group md:gap-8 hover:border-zinc-300 border-zinc-200 ${backgroundImage ? 'card-bg-image' : ''} hover:z-10`;
 
     return (
